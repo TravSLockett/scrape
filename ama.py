@@ -172,7 +172,7 @@ def parse():
     #extracted_data.append(ParseReviews())
     sleep(5)
 
-    f = open('data.json', 'w')
+    f = open('amaData.json', 'w')
     dump(extracted_data, f, indent=4)
     f.close()
 
