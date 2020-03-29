@@ -11,21 +11,21 @@ def parseWalmart():
     review_list= []
 
     #making the connection to the URL
-    url = 'https://www.walmart.com/ip/Beats-Solo-Pro-Wireless-Noise-Cancelling-On-Ear-Headphones-Black/350931600'
+    url = 'https://shop.usa.canon.com/shop/en/catalog/eos-rebel-sl3-18-55-black-kit'
     response = get(url)
     #download the whole html doc.
     html_soup = BeautifulSoup(response.text, 'html.parser')
 
     #general information, getting the name, price and how many reviews there are
-    Name = html_soup.find('h1', class_ = 'prod-ProductTitle font-normal').get_text()
-    Price = html_soup.find('span', class_ = 'price-characteristic').get_text()
-    ReviewCount = html_soup.find('span', class_ = 'stars-reviews-count-node').get_text()
-    #ReviewTitle = html_soup.find('h3', class_='review-title font-bold').get_text()
-    review_url = 'https://www.walmart.com/reviews/product/350931600'
-    response = get(review_url)
+    Name = html_soup.find('span', itemprop = 'name').get_text()
+    Price = html_soup.find('span', class_ = 'price final_price').get_text()
+    #ReviewCount = html_soup.find('a', class_ = 'bv-rating-label bv-text-link bv-focusable')
+    #print(ReviewCount)
+    #review_url = 'https://www.walmart.com/reviews/product/350931600'
+    #response = get(review_url)
     review_html = BeautifulSoup(response.text, 'html.parser')
     #get info about the review
-    Reviews = review_html.find_all('div', class_ = 'Grid ReviewList-content')
+    Reviews = review_html.find_all('li',  itemprop = 'review')
     idx = len(Reviews)
     print(idx)
     #print(Reviews)
@@ -33,7 +33,7 @@ def parseWalmart():
     for Review in Reviews:
         count = count + 1
         print(count)
-        ReviewAuthor = Review.find('span', class_ = 'review-footer-userNickname').get_text()
+        ReviewAuthor = Review.find('span', class_ = 'bv-author').get_text()
         ReviewTime = Review.find('span', class_ = 'review-footer-submissionTime').get_text()
         RawReviewStar = Review.find_all('span', class_ = 'star display-inline-block star-rated')
         ReviewStar = len(RawReviewStar)
@@ -64,7 +64,7 @@ def parseWalmart():
 
         review_list.append(review_dict)
     data = [
-        Name, Price, ReviewCount, review_list
+        Name, Price, review_list
     ]
 
     return data
@@ -78,11 +78,11 @@ def writeToExcel(data):
 
 def do():
     extracted_data = parseWalmart()
-    writeToExcel(extracted_data)
+    #writeToExcel(extracted_data)
 
-    #f = open('dataWal.json', 'w')
-    #dump(extracted_data, f, indent=4)
-    #f.close()
+    f = open('dataCanon.json', 'w')
+    dump(extracted_data, f, indent=4)
+    f.close()
 
 
 if __name__ == '__main__':

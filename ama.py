@@ -12,10 +12,9 @@ from re import sub
 from time import sleep
 
 
-
 def ParseReviews():
     #GENRAL INFO
-    gen_url = 'https://www.amazon.com/dp/B082MQFG76'
+    gen_url = 'https://www.amazon.com/dp/B01F6URXYY'
     headers = {'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'}
     #for i in range(5):
     response = get(gen_url, headers=headers, verify=False, timeout=30)
@@ -43,9 +42,8 @@ def ParseReviews():
     #REVIEWS
     #ratings_dict = {}
     reviews_list = []
-    for n in range(1):
-        amazon_url ='https://www.amazon.com/GoPro-Silver-Elite-X-microSDHC-Adapter-UHS-I/product-reviews/B07XZK2S9C/ref=cm_cr_arp_d_paging_btm_next_'+str(n+1)+'?ie=UTF8&reviewerType=all_reviews&pageNumber='+str(n+1)
-
+    for n in range(34):
+        amazon_url ='https://www.amazon.com/Musou-Component-Converter-Adapter-Coaxial/product-reviews/B01F6URXYY/ref=cm_cr_arp_d_paging_btm_next_'+str(n+1)+'?ie=UTF8&reviewerType=all_reviews&pageNumber='+str(n+1)
         # Add some recent user agent to prevent amazon from blocking the request
         # Find some chrome user agent strings  here https://udger.com/resources/ua-list/browser-detail?browser=Chrome
         headers = {
@@ -145,6 +143,7 @@ def ParseReviews():
             ]
             reviews_list.append(review_dict)
 
+
         data = [
             product_name,
             product_price,
@@ -156,7 +155,8 @@ def ParseReviews():
 def writeToExcel(data):
     df = pd.DataFrame(data[2])
     df.columns = ['Author','Date','rating','header','text','verified?','posted pic','helpful?']
-    writer = ExcelWriter(str(data[0])+'.xlsx')
+    #writer = ExcelWriter(str(data[0])+'_AMAZON_3_28_2020'+'.xlsx')
+    writer = ExcelWriter('Musou HDMI to 1080P Component Video (YPbPr) Scaler Converter Adapter'+'_AMAZON_3_28_2020'+'.xlsx')
     df.to_excel(writer, 'Sheet1', index=False)
     writer.save()
 
@@ -166,17 +166,16 @@ def parse():
     # Add your own ASINs here
     #AsinList = ['B07WHMQNPC']
     #review_printed = 0
-    #extracted_data = []
+    extracted_data = []
     extracted_data = ParseReviews()
     #for asin in AsinList:
     #extracted_data.append(ParseReviews())
     sleep(5)
 
-    f = open('amaData.json', 'w')
-    dump(extracted_data, f, indent=4)
-    f.close()
-
-    #writeToExcel(extracted_data)
+    #f = open('amaData.json', 'w')
+    #dump(extracted_data, f, indent=4)
+    #f.close()
+    writeToExcel(extracted_data)
 
 
 
