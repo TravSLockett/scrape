@@ -12,9 +12,10 @@ from re import sub
 from time import sleep
 
 
+
 def ParseReviews():
     #GENRAL INFO
-    gen_url = 'https://www.amazon.com/dp/B01F6URXYY'
+    gen_url = 'https://www.amazon.com/dp/B07QBD256Y'
     headers = {'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'}
     #for i in range(5):
     response = get(gen_url, headers=headers, verify=False, timeout=30)
@@ -42,8 +43,8 @@ def ParseReviews():
     #REVIEWS
     #ratings_dict = {}
     reviews_list = []
-    for n in range(34):
-        amazon_url ='https://www.amazon.com/Musou-Component-Converter-Adapter-Coaxial/product-reviews/B01F6URXYY/ref=cm_cr_arp_d_paging_btm_next_'+str(n+1)+'?ie=UTF8&reviewerType=all_reviews&pageNumber='+str(n+1)
+    for n in range(1):
+        amazon_url ='https://www.amazon.com/Canon-Rebel-18-55mm-Lens-Black/dp/B07QBD256Y/ref=sr_1_2?keywords=EOS%2BRebel%2BSL3%2BEF-S%2B18-55mm%2Bf%2F4-5.6%2BIS%2BSTM%2BLens%2BKit%2BBlack&qid=1584279029&sr=8-2&th=1#customerReviews'
         # Add some recent user agent to prevent amazon from blocking the request
         # Find some chrome user agent strings  here https://udger.com/resources/ua-list/browser-detail?browser=Chrome
         headers = {
@@ -86,14 +87,14 @@ def ParseReviews():
 
         # Parsing individual reviews
         for review in reviews:
-            XPATH_RATING = './/i[@data-hook="review-star-rating"]//text()'
-            XPATH_REVIEW_HEADER = './/a[@data-hook="review-title"]//text()'
+            XPATH_RATING = './/span[contains(@class,"a-icon-alt")]//text()'
+            XPATH_REVIEW_HEADER = './/span[@data-hook="review-title"]//text()'
             XPATH_REVIEW_POSTED_DATE = './/span[@data-hook="review-date"]//text()'
             XPATH_REVIEW_TEXT_1 = './/span[@data-hook="review-body"]//text()'
             XPATH_REVIEW_TEXT_2 = './/div//span[@data-action="columnbalancing-showfullreview"]/@data-columnbalancing-showfullreview'
             XPATH_AUTHOR = './/span[contains(@class,"profile-name")]//text()'
             XPATH_REVIEW_TEXT_3 = './/div[contains(@id,"dpReviews")]/div/text()'
-            XPATH_REVIEW_VP = './/span[@data-hook="avp-badge"]//text()'
+            XPATH_REVIEW_VP = './/span[@data-hook="avp-badge-linkless"]//text()'
             XPATH_REVIEW_POSTEDPIC = './/img[@data-hook="review-image-tile"]/@src'
             XPATH_REVIEW_HELPFUL = './/span[@data-hook="helpful-vote-statement"]//text()'
 
@@ -156,7 +157,7 @@ def writeToExcel(data):
     df = pd.DataFrame(data[2])
     df.columns = ['Author','Date','rating','header','text','verified?','posted pic','helpful?']
     #writer = ExcelWriter(str(data[0])+'_AMAZON_3_28_2020'+'.xlsx')
-    writer = ExcelWriter('Musou HDMI to 1080P Component Video (YPbPr) Scaler Converter Adapter'+'_AMAZON_3_28_2020'+'.xlsx')
+    writer = ExcelWriter(str(data[0])+'_AMAZON_FOREIGN_3_28_2020'+'.xlsx')
     df.to_excel(writer, 'Sheet1', index=False)
     writer.save()
 
@@ -166,7 +167,6 @@ def parse():
     # Add your own ASINs here
     #AsinList = ['B07WHMQNPC']
     #review_printed = 0
-    extracted_data = []
     extracted_data = ParseReviews()
     #for asin in AsinList:
     #extracted_data.append(ParseReviews())
