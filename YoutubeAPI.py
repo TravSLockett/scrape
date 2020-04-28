@@ -1,11 +1,22 @@
 import json
+from pytube import YouTube
 import re
 import urllib.request
-from pytube import YouTube
 import os, sys
 from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.tools import run_flow
 from oauth2client.file import Storage
+from pandas import ExcelWriter
+import pandas as pd
+
+def writeToExcel(data):
+  df = pd.DataFrame(data[0])
+  df.columns = ['Author', 'Date', 'Rating', 'Title', 'Content', 'ThumbsUp', 'ThumbsDown', 'posted pic?']
+  writer = ExcelWriter(
+    'Beats by Dr. Dre - Solo Pro Wireless Noise Cancelling On-Ear Headphones - Black' + '_BESTBUY_3_31_2020' + '.xlsx')
+  df.to_excel(writer, 'Sheet1', index=False)
+  writer.save()
+
 
 #get the captions
 def disable_stout():
