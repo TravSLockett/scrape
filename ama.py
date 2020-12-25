@@ -43,7 +43,7 @@ def ParseReviews():
     #REVIEWS
     #ratings_dict = {}
     reviews_list = []
-    for n in range(1):
+    for n in range(3):
         amazon_url ='https://www.amazon.com/Canon-Rebel-18-55mm-Lens-Black/dp/B07QBD256Y/ref=sr_1_2?keywords=EOS%2BRebel%2BSL3%2BEF-S%2B18-55mm%2Bf%2F4-5.6%2BIS%2BSTM%2BLens%2BKit%2BBlack&qid=1584279029&sr=8-2&th=1#customerReviews'
         # Add some recent user agent to prevent amazon from blocking the request
         # Find some chrome user agent strings  here https://udger.com/resources/ua-list/browser-detail?browser=Chrome
@@ -143,14 +143,18 @@ def ParseReviews():
                  raw_review_helpful
             ]
             reviews_list.append(review_dict)
-
+            print(type(review_dict))
 
         data = [
             product_name,
             product_price,
             reviews_list
         ]
-    return data
+
+        print(type(data))
+        print(type(reviews_list))
+
+    return reviews_list
     #return {"error": "failed to process the page", "url": amazon_url}
 
 def writeToExcel(data):
@@ -175,7 +179,7 @@ def parse():
     #f = open('amaData.json', 'w')
     #dump(extracted_data, f, indent=4)
     #f.close()
-    writeToExcel(extracted_data)
+    #writeToExcel(extracted_data)
 
 
 

@@ -13,4 +13,4 @@ browser.find_element_by_xpath('/html/body/div[3]/div[3]/div[2]/div/div[3]/form/b
 web = bs(browser.page_source, 'html.parser')
 test = web.find_all('tr', id = 'section_row')
 print(len(test))
-browser.quit()
+#browser.quit()

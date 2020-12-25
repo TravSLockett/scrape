@@ -164,13 +164,13 @@ class YouTubeCha:
     except:
       return ""
 
-link_file = "something2.csv"
+link_file = "something3.csv"
 with open(link_file, "r") as f:
   content = f.readlines()
 
 content = list(map(lambda s: s.strip(), content))
 #content = list (map(lambda s: s.strip(','), content))
-count = 219
+count = 801
 regular = RG()
 data_list = []
 for url in content:
