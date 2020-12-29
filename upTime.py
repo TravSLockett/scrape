@@ -40,13 +40,10 @@ def conStr2Num(item):
     finally:
         return down
 
-#write the rows to the excel file
-# with open('up.csv', mode='w') as up:
-#     up_writer = csv.writer(up, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-#     up_writer.writerow(['Service Name', '2020', '2019','2018','2017','2016'])
 
 #open the website
-browser = webdriver.Chrome()
+browser = webdriver.Chrome(executable_path='/Users/Travishungry/nerd/scrape/chromedriver')
+#browser = webdriver.Chrome()
 browser.get('https://status.cloud.google.com/summary')
 browser.maximize_window()
 browser.implicitly_wait(10)
@@ -201,8 +198,14 @@ print("length of 2018 is " + str(len(data18)))
 print("length of 2017 is " + str(len(data17)))
 print("length of 2016 is " + str(len(data16)))
 
-data_url = './up.csv'
-df = pd.read_csv(data_url)
+#write the data to excel
+writer = pd.ExcelWriter('up_google.xlsx', engine='openpyxl')
+wb  = writer.book
+df = pd.DataFrame({'Service Name': serviceN,
+                  '2020': data20, '2019': data19, '2018':data18, '2017': data17, '2016':data16})
+df.to_excel(writer, "Google Cloud")
+wb.save('up_google.xlsx')
+
 fig = go.Figure(data=[go.Table(
     header=dict(values=['Service Name', '2020', '2019', '2018', '2017', '2016'],
                 line_color='darkslategray',
