@@ -110,10 +110,10 @@ browser.maximize_window()
 browser.implicitly_wait(60)
 
 
-# #choose America
-# browser.execute_script("arguments[0].click();", WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[1]/div/div/div[2]/div/div/div/div/div[2]/div[1]/div/div[1]/div[1]/div/label[1]/input'))))
-#EMEA
-browser.execute_script("arguments[0].click();", WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[1]/div/div/div[2]/div/div/div/div/div[2]/div[1]/div/div[1]/div[1]/div/label[2]/input'))))
+#choose America
+browser.execute_script("arguments[0].click();", WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[1]/div/div/div[2]/div/div/div/div/div[2]/div[1]/div/div[1]/div[1]/div/label[1]/input'))))
+# #EMEA
+# browser.execute_script("arguments[0].click();", WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[1]/div/div/div[2]/div/div/div/div/div[2]/div[1]/div/div[1]/div[1]/div/label[2]/input'))))
 # #AP
 # browser.execute_script("arguments[0].click();", WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div/div/div[2]/div/div/div/div/div[2]/div[1]/div/div[1]/div[1]/div/label[3]/input'))))
 browser.implicitly_wait(60)
@@ -219,11 +219,14 @@ for instance in instances:
                         time.sleep(1)
 
                         sections = soup_level1.find('div', class_ = "slds-col slds-size_1-of-3 slds-p-left--medium slds-border_left")
+                        print("Section is "+ str(sections))
                         #for maintainance
                         if sections == None:
+                            print("It was none")
                             sections = soup_level1.find('div',class_="sc-jLMuHf eLztnl")
+                            print("The new sections is "+ str(sections))
                             browser.implicitly_wait(20)
-                            time.sleep(1)
+                            time.sleep(2)
                         browser.implicitly_wait(20)
                         time.sleep(2)
                         count = 0
@@ -310,10 +313,10 @@ for instance in instances:
     browser.get('https://status.salesforce.com/products/Salesforce_Services')
     browser.implicitly_wait(10)
     time.sleep(0.5)
-    # #America
-    # browser.execute_script("arguments[0].click();", WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div/div/div[2]/div/div/div/div/div[2]/div[1]/div/div[1]/div[1]/div/label[1]/input'))))
-    #EMEA
-    browser.execute_script("arguments[0].click();", WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div/div/div[2]/div/div/div/div/div[2]/div[1]/div/div[1]/div[1]/div/label[2]/input'))))
+    #America
+    browser.execute_script("arguments[0].click();", WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div/div/div[2]/div/div/div/div/div[2]/div[1]/div/div[1]/div[1]/div/label[1]/input'))))
+    # #EMEA
+    # browser.execute_script("arguments[0].click();", WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div/div/div[2]/div/div/div/div/div[2]/div[1]/div/div[1]/div[1]/div/label[2]/input'))))
     # #AP
     # browser.execute_script("arguments[0].click();", WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div/div/div[2]/div/div/div/div/div[2]/div[1]/div/div[1]/div[1]/div/label[3]/input'))))
 
@@ -343,12 +346,12 @@ for i in range(col.__len__()):
     c3a_arrF.append("{0:.5g}".format((1 - (c3a_arr[i] / 8760)) * 100))
 
 #write the data to excel
-writer = pd.ExcelWriter('up_sfdc_emea.xlsx', engine='openpyxl')
+writer = pd.ExcelWriter('up_sfdc_a.xlsx', engine='openpyxl')
 wb  = writer.book
 df = pd.DataFrame({'Service Name': col,
                   'Core Service': core_Service_arrF,'Search': search_arrF, "Analytics": analytics_arrF, "Live Agen": live_Agent_arrF, "CPQ and Billing": cpqb_arrF, "Einstein Bots": einstein_Bots_arrF, "Communities": communities_arrF, "Customer 360 Audiences": c3a_arrF})
-df.to_excel(writer, "EMEA")
-wb.save('up_sfdc_emea.xlsx')
+df.to_excel(writer, "America")
+wb.save('up_sfdc_a.xlsx')
 
 #graph the table
 fig = go.Figure(data=[go.Table(
